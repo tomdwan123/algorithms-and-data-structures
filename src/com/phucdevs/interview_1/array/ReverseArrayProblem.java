@@ -23,6 +23,7 @@ public class ReverseArrayProblem {
         return nums;
     }
 
+    // O(N/2) = O(N) linear running time
     static int[] solve2(int[] nums) {
 
         int lowIndex = 0;
