@@ -31,6 +31,13 @@ public class Stack<T>{
         return item;
     }
 
+    public T peek() {
+
+        if (isEmpty()) return null;
+
+        return head.getData();
+    }
+
     // O(1)
     public int size() {
         return count;
