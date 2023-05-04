@@ -43,6 +43,15 @@ public class MaxItemStackProblem {
          *
          * Hint: we can use another stack to track the max item
          */
+        MaxItemStackProblem maxItemStack = new MaxItemStackProblem();
+
+        maxItemStack.push(10);
+        maxItemStack.push(5);
+        maxItemStack.push(1);
+        maxItemStack.push(12);
+        maxItemStack.push(11);
+
+        System.out.println(maxItemStack.getMaxItem());
 
     }
 }
