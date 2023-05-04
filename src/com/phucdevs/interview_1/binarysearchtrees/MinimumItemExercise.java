@@ -123,6 +123,24 @@ class BinarySearchMinTree<T extends Comparable<T>> implements MinTree<T> {
         return null;
     }
 
+    @Override
+    public int getTotalAge(MinNode<T> node) {
+
+        int sum = 0;
+        int leftSum = 0;
+        int rightSum = 0;
+
+        if (node == null) {
+            return 0;
+        }
+
+        leftSum = getTotalAge(node.getLeftChild());
+        rightSum = getTotalAge(node.getRightChild());
+
+        sum = ((Person) node.getData()).getAge() + leftSum + rightSum;
+        return sum;
+    }
+
     // calculate the size of a substree with root node 'node'
     private int treeSize(MinNode<T> node) {
         if(node == null) return 0;
@@ -330,4 +348,42 @@ interface MinTree<T> {
     public void remove(T data);
     public boolean isEqualsTrees(MinNode<T> node1, MinNode<T> node2);
     public MinNode<T> getKSmallest(MinNode<T> node, int k);
+    public int getTotalAge(MinNode<T> node);
+}
+
+class Person implements Comparable<Person> {
+
+    private String name;
+    private int age;
+
+    public Person(String name, int age) {
+        this.age = age;
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    @Override
+    public int compareTo(Person person) {
+        return -(age - person.getAge());
+    }
+
+    @Override
+    public String toString() {
+        return this.name + "-" + this.age;
+    }
 }
