@@ -81,6 +81,56 @@ class BinarySearchMinTree<T extends Comparable<T>> implements MinTree<T> {
             remove(data, root);
     }
 
+    @Override
+    public boolean isEqualsTrees(MinNode<T> node1, MinNode<T> node2) {
+
+        if (
+                (node1 == null && node2 == null)
+                || (node1 == null && node2 != null)
+                || (node1 != null && node2 == null)
+        ) {
+            return node1 == node2;
+        }
+
+        if (node1.getData().compareTo(node2.getData()) != 0) {
+            return false;
+        }
+
+        return isEqualsTrees(node1.getLeftChild(), node2.getLeftChild())
+                && isEqualsTrees(node1.getRightChild(), node2.getRightChild());
+    }
+
+    @Override
+    public MinNode<T> getKSmallest(MinNode<T> node, int k) {
+        /**
+         * Write an efficient in-place algorithm to find the k-th smallest item in a binary search tree!
+         */
+        int n = treeSize(node.getLeftChild()) + 1;
+
+        // this is when we find the kth smallest item
+        if (n == k) {
+            return node;
+        }
+
+        if (n > k) {
+            return getKSmallest(node.getLeftChild(), k);
+        }
+
+        if (n < k) {
+           return  getKSmallest(node.getRightChild(), k - n);
+        }
+
+        return null;
+    }
+
+    // calculate the size of a substree with root node 'node'
+    private int treeSize(MinNode<T> node) {
+        if(node == null) return 0;
+
+        int num = (treeSize(node.getLeftChild())+treeSize(node.getRightChild())+1);
+        return num;
+    }
+
     private void remove(T data, MinNode<T> node) {
 
         if (data.compareTo(node.getData()) < 0) {
@@ -278,4 +328,6 @@ interface MinTree<T> {
     public T getMax();
     public void traversal();
     public void remove(T data);
+    public boolean isEqualsTrees(MinNode<T> node1, MinNode<T> node2);
+    public MinNode<T> getKSmallest(MinNode<T> node, int k);
 }
