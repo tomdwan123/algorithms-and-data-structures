@@ -1,4 +1,4 @@
-package com.phucdevs.interview_1.comparearraylistanlinkedlist;
+package com.phucdevs.interview_1.comparerunningtime;
 
 import com.phucdevs.interview_1.linkedlist.LinkedList;
 
