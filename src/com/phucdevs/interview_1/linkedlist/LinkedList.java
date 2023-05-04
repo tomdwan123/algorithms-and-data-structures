@@ -18,14 +18,14 @@ public class LinkedList<T extends Comparable<T>> implements List<T> {
     }
 
     // we just have to update the references O(1)
-    private void insertBeginning(T data) {
+    public void insertBeginning(T data) {
 
         Node<T> newNode = new Node<>(data);
         newNode.setNextNode(root);
         root = newNode;
     }
 
-    private void insertEnding(T data, Node<T> node) {
+    public void insertEnding(T data, Node<T> node) {
 
         if (node.getNextNode() != null) {
             insertEnding(data, node.getNextNode());
@@ -49,7 +49,7 @@ public class LinkedList<T extends Comparable<T>> implements List<T> {
         }
     }
 
-    private void remove(T data, Node<T> previousNode, Node<T> actualNode) {
+    public void remove(T data, Node<T> previousNode, Node<T> actualNode) {
 
         // we have to find the node we want to remove
         while (actualNode != null) {
