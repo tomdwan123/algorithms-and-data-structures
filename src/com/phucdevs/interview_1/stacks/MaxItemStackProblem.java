@@ -2,6 +2,26 @@ package com.phucdevs.interview_1.stacks;
 
 public class MaxItemStackProblem {
 
+    public static void main(String[] args) {
+
+        /**
+         * The aim is to design an algorithm that can return the maximum item of a stack in O(1)
+         * running time complexity. We can use O(N) extra memory!
+         *
+         * Hint: we can use another stack to track the max item
+         */
+        MaxItemStackProblem maxItemStack = new MaxItemStackProblem();
+
+        maxItemStack.push(10);
+        maxItemStack.push(5);
+        maxItemStack.push(1);
+        maxItemStack.push(12);
+        maxItemStack.push(11);
+
+        System.out.println(maxItemStack.getMaxItem());
+
+    }
+
     private Stack<Integer> mainStack;
     private Stack<Integer> maxStack;
 
@@ -33,25 +53,5 @@ public class MaxItemStackProblem {
 
     public int getMaxItem() {
         return maxStack.peek();
-    }
-
-    public static void main(String[] args) {
-
-        /**
-         * The aim is to design an algorithm that can return the maximum item of a stack in O(1)
-         * running time complexity. We can use O(N) extra memory!
-         *
-         * Hint: we can use another stack to track the max item
-         */
-        MaxItemStackProblem maxItemStack = new MaxItemStackProblem();
-
-        maxItemStack.push(10);
-        maxItemStack.push(5);
-        maxItemStack.push(1);
-        maxItemStack.push(12);
-        maxItemStack.push(11);
-
-        System.out.println(maxItemStack.getMaxItem());
-
     }
 }
