@@ -4,7 +4,18 @@ public class MinimumItemExercise {
 
     public static void main(String[] args) {
 
+        BinarySearchMinTree<Integer> bst = new BinarySearchMinTree<>();
 
+        bst.insert(10);
+        bst.insert(5);
+        bst.insert(15);
+        bst.insert(14);
+        bst.insert(16);
+        bst.insert(-1);
+
+        System.out.println(bst.getMin());
+        System.out.println(bst.getMax());
+        bst.traversal();
     }
 }
 
@@ -14,20 +25,55 @@ class BinarySearchMinTree<T extends Comparable<T>> implements MinTree<T> {
 
     @Override
     public T getMin() {
-        // your implementation here !!! (you may have to define helper methods if needed)
-        if (root == null) {
-            return null;
-        } else {
-            return getPreOrderTraverse(root);
-        }
+        if (root == null) return null;
+
+        return getMin(root);
     }
 
-    private T getPreOrderTraverse(MinNode<T> node) {
+    private T getMin(MinNode<T> node) {
+
         if (node.getLeftChild() != null) {
-            return getPreOrderTraverse(node.getLeftChild());
+            return getMin(node.getLeftChild());
         }
 
         return node.getData();
+    }
+
+    @Override
+    public T getMax() {
+        if (root == null) return null;
+
+        return getMax(root);
+    }
+
+    private T getMax(MinNode<T> node) {
+
+        if (node.getRightChild() != null) {
+            return getMax(node.getRightChild());
+        }
+
+        return node.getData();
+    }
+
+    @Override
+    public void traversal() {
+
+        if (root == null) return;
+
+        traversal(root);
+    }
+
+    private void traversal(MinNode<T> node) {
+
+        if (node.getLeftChild() != null) {
+            traversal(node.getLeftChild());
+        }
+
+        System.out.print(node.getData() + " - ");
+
+        if (node.getRightChild() != null) {
+            traversal(node.getRightChild());
+        }
     }
 
     @Override
@@ -117,4 +163,6 @@ class MinNode<T> {
 interface MinTree<T> {
     public void insert(T data);
     public T getMin();
+    public T getMax();
+    public void traversal();
 }
