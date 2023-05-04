@@ -57,7 +57,6 @@ class BinarySearchMinTree<T extends Comparable<T>> implements MinTree<T> {
 
     @Override
     public void traversal() {
-
         if (root == null) return;
 
         traversal(root);
@@ -74,6 +73,119 @@ class BinarySearchMinTree<T extends Comparable<T>> implements MinTree<T> {
         if (node.getRightChild() != null) {
             traversal(node.getRightChild());
         }
+    }
+
+    @Override
+    public void remove(T data) {
+        if (root != null)
+            remove(data, root);
+    }
+
+    private void remove(T data, MinNode<T> node) {
+
+        if (data.compareTo(node.getData()) < 0) {
+            remove(data, node.getLeftChild());
+        } else if (data.compareTo(node.getData()) > 0) {
+            remove(data, node.getRightChild());
+        } else {
+            // we have found the item we want to remove
+
+            // CASE 1: if the node is left node (without left or right child)
+            if (node.getLeftChild() == null && node.getRightChild() == null) {
+                // whether the node is a left child or right child
+                MinNode<T> parentNode = node.getParentNode();
+
+                // the node if left child
+                if (parentNode != null && parentNode.getLeftChild() == node) {
+                    parentNode.setLeftChild(null);
+                // the node is right child
+                } else if (parentNode != null && parentNode.getRightChild() == node) {
+                    parentNode.setRightChild(null);
+                }
+
+                // maybe the root node is the one we want to remove
+                if (parentNode == null) {
+                    root = null;
+                }
+
+                // remove the node and makes it eligible for GC
+                node = null;
+
+            }
+            // CASE 2: when we remove items with a single child
+            // a single right child
+            else if (node.getLeftChild() == null && node.getRightChild() != null) {
+
+                MinNode<T> parent = node.getParentNode();
+
+                // the node is the left child
+                if (parent != null && parent.getLeftChild() == node) {
+                    parent.setLeftChild(node.getRightChild());
+                // the node is the right child
+                } else if (parent != null && parent.getRightChild() == node) {
+                    parent.setRightChild(node.getRightChild());
+                }
+
+                // when we deal with the root node
+                if (parent == null) {
+                    root = node.getRightChild();
+                }
+
+                // have to update the right child's parent
+                node.getRightChild().setParentNode(parent);
+
+                // remove the node and makes it eligible for GC
+                node = null;
+            }
+            // CASE 2: when we remove items with a single child
+            // a single left child
+            else if (node.getLeftChild() != null && node.getRightChild() == null) {
+
+                MinNode<T> parent = node.getParentNode();
+
+                // the node is the left child
+                if (parent != null && parent.getLeftChild() == node) {
+                    parent.setLeftChild(node.getLeftChild());
+                    // the node is the right child
+                } else if (parent != null && parent.getRightChild() == node) {
+                    parent.setRightChild(node.getLeftChild());
+                }
+
+                // when we deal with the root node
+                if (parent == null) {
+                    root = node.getLeftChild();
+                }
+
+                // have to update the right child's parent
+                node.getLeftChild().setParentNode(parent);
+
+                // remove the node and makes it eligible for GC
+                node = null;
+            }
+            // CASE 3: remove 2 children
+            else {
+                // find the max item in the left subtree
+                MinNode<T> predecessor = getPredecessor(node.getLeftChild());
+
+                // swap just the values
+                T temp = predecessor.getData();
+                predecessor.setData(node.getData());
+                node.setData(temp);
+
+                // we have to call the delete method recursively on the predecessor
+                remove(data, predecessor);
+            }
+        }
+
+    }
+
+    private MinNode<T> getPredecessor(MinNode<T> node) {
+
+        if (node.getRightChild() != null) {
+            return getPredecessor(node.getRightChild());
+        }
+
+        return node;
     }
 
     @Override
@@ -165,4 +277,5 @@ interface MinTree<T> {
     public T getMin();
     public T getMax();
     public void traversal();
+    public void remove(T data);
 }
