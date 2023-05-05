@@ -44,6 +44,70 @@ public class Heap {
         heap[index2] = temp;
     }
 
+    // the max item is the root node in a max heap
+    public int getMax() {
+        return heap[0];
+    }
+
+    // heapsort is doing a poll() operation for N times O(logN)
+    public void heapSort() {
+        int n = heapSize;
+
+        for (int i = 0; i < n; i++) {
+            int max = poll();
+            System.out.println(max);
+        }
+    }
+
+    // that removes and returns the max item in O(logN)
+    public int poll() {
+
+        int max = getMax();
+
+        // swap the root node with the last item
+        swap(0, heapSize - 1);
+        heapSize--;
+
+        // fix the heap properties if needed
+        fixDown(0);
+
+        return max;
+    }
+
+    // O(logN)
+    private void fixDown(int index) {
+
+        int leftChildIndex = 2 * index + 1;
+        int rightChildIndex = 2 * index + 2;
+
+        // in a max heap the parent is always larger than the children
+        int largestIndex = index;
+
+        // compare the left child with the parent
+        if (leftChildIndex < heapSize && heap[leftChildIndex] > heap[index]) {
+            largestIndex = leftChildIndex;
+        }
+
+        // compare the right child with the parent
+        if (rightChildIndex < heapSize && heap[rightChildIndex] > heap[index]) {
+            largestIndex = rightChildIndex;
+        }
+
+        // one of the children is larger than the parent so we have to swap items
+        // otherwise the heap properties are not violated
+        if (index != largestIndex) {
+            swap(index, largestIndex);
+            // until the heap properties are violated we keep calling the method recursively
+            fixDown(largestIndex);
+        }
+    }
+
+    // O(1)
+    public boolean isEmpty() {
+        return heapSize == 0;
+    }
+
+    // O(1)
     private boolean isFull() {
         return heapSize == heap.length;
     }
